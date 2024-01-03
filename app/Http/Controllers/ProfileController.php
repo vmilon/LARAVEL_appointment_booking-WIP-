@@ -16,9 +16,8 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = auth()->user(); // Assuming you're using Laravel's built-in authentication
+        return view('profile.edit', compact('user'));
     }
 
     /**
