@@ -32,7 +32,18 @@
             
             <br><br>
 
-            <button type="submit">Update Profile</button>
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+            <br>
+
+            <a href="{{ route('appointments.index') }}" class="btn btn-secondary">Back to Appointments</a>
+            <br><br>
+
+            @if(session('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+            
         </form>
     </div>
 @endsection

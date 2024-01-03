@@ -22,49 +22,45 @@ class AppointmentController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Validate the form data
-    $request->validate([
-        'date' => [
-            'required',
-            'date',
-            'after_or_equal:now', // Ensure the appointment is in the future
-            Rule::unique('appointments', 'date')->where(function ($query) use ($request) {
-                $query->where('user_id', auth()->id());
-            }),
-            // Add any additional validation rules as needed
-        ],
-        'fullname' => 'required|string|max:255',
-        'phone' => 'required|string|max:20',
-        'email' => 'required|email|max:255',
-        'date_end' => 'required|date|after_or_equal:date', // Assuming you have an 'end' date for the appointment
-    ], [
-        'date.unique' => 'The selected date and time are not available.',
-        'date_end.after_or_equal' => 'The end date must be equal to or after the start date.',
-        'date_end.required' => 'The end date is required.', // Customize the message as needed
-        'date_end.date' => 'Invalid date format for the end date.', // Customize the message as needed
-        'date_end.after_or_equal' => 'The end date must be equal to or after the start date.', // Customize the message as needed
-        'fullname.required' => 'The fullname field is required.', // Customize the message as needed
-        'phone.required' => 'The phone field is required.', // Customize the message as needed
-        'email.required' => 'The email field is required.', // Customize the message as needed
-    ]);
+    {
+        // Validate the form data
+        $request->validate([
+            'date' => [
+                'required',
+                'date',
+                'after_or_equal:now', // Ensure the appointment is in the future
+                Rule::unique('appointments', 'date')->where(function ($query) use ($request) {
+                    return $query
+                        ->where('date', '>=', now()->toDateTimeString()) // Ensure the new appointment is in the future
+                        ->whereNotIn('user_id', [auth()->id()]); // Exclude appointments of the authenticated user
+                }),
+                // Add any additional validation rules as needed
+            ],
+            'fullname' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
+        ], [
+            'date.unique' => 'The selected date and time are not available.',
+            'fullname.required' => 'The fullname field is required.',
+            'phone.required' => 'The phone field is required.',
+            'email.required' => 'The email field is required.',
+        ]);
 
-    // Create a new appointment instance
-    $appointment = new Appointment([
-        'date' => $request->input('date'),
-        'date_end' => $request->input('date_end'),
-        'fullname' => $request->input('fullname'),
-        'phone' => $request->input('phone'),
-        'email' => $request->input('email'),
-        'user_id' => auth()->id(),
-    ]);
+        // Create a new appointment instance
+        $appointment = new Appointment([
+            'date' => $request->input('date'),
+            'fullname' => $request->input('fullname'),
+            'phone' => $request->input('phone'),
+            'email' => $request->input('email'),
+            'user_id' => auth()->id(),
+        ]);
 
-    // Save the appointment to the database
-    $appointment->save();
+        // Save the appointment to the database
+        $appointment->save();
 
-    // Redirect back to the appointments index page with a success message
-    return redirect()->route('appointments.index')->with('success', 'Appointment created successfully.');
-}
+        // Redirect back to the appointments index page with a success message
+        return redirect()->route('appointments.index')->with('success', 'Appointment created successfully.');
+    }
 
 
     public function edit(Appointment $appointment)
