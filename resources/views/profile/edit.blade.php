@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container">
-        <h2>Edit Profile</h2>
+        <h2>Edit Profile<br><br></h2>
 
         <form action="{{ route('profile.update') }}" method="POST">
             @csrf
@@ -15,10 +15,22 @@
             <label for="name">Name:</label>
             <input type="text" name="name" value="{{ $user->name }}" required>
 
+            <br><br>
+
             <label for="email">Email:</label>
             <input type="email" name="email" value="{{ $user->email }}" required>
 
-            <!-- Add more fields as needed -->
+            <br><br>
+
+            <label for="phone">Phone:</label>
+            <input type="text" name="phone" value="{{ $user->phone }}" required> 
+
+            <br><br>
+
+            <label for="fullname">Full Name:</label>
+            <input type="text" name="fullname" value="{{ $user->fullname }}" required>
+            
+            <br><br>
 
             <button type="submit">Update Profile</button>
         </form>

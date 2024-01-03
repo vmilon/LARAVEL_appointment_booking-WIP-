@@ -16,24 +16,28 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        $user = auth()->user(); // Assuming you're using Laravel's built-in authentication
+        $user = auth()->user();
         return view('profile.edit', compact('user'));
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $user = auth()->user();
+    
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:20',
+            'fullname' => 'nullable|string|max:255',
+            // Add validation rules for new fields
+        ]);
+    
+        $user->update($request->all());
+    
+        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
     }
 
     /**
