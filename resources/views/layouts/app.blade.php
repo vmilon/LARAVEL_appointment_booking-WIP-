@@ -19,6 +19,8 @@
                 width:40%;
                 margin-right:auto;
                 margin-left:auto;
+                justify-content:center;
+                text-align:center;
             }
 
         </style>

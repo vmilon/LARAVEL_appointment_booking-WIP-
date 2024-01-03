@@ -12,6 +12,15 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
+
+
+    //redirect the user to their appointment list after succesfully loging in
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect()->route('appointments.index');
+    }
+
+
     /**
      * Display the login view.
      */

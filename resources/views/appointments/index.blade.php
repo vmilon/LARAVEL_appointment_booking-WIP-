@@ -2,16 +2,19 @@
 
 @section('content')
     <div class="container">
-        <h2>Appointments</h2>
+        <h2 style=text-align:center;>Appointments<br><br></h2>
+
+        <p>Below you can see your appointments. You can also choose to create new appointments or edit/delete your existing ones.<br><br></p>
         
         <a href="{{ route('appointments.create') }}" class="btn btn-primary">Create Appointment</a>
 
-        <table class="table mt-3">
+        <table class="table mt-3" style=width:100%>
             <thead>
                 <tr>
                     <th>Appointment ID</th>
-                    <th>User Email</th>
+                    
                     <th>Date</th>
+                    
                     <th>Options</th>
                 </tr>
             </thead>
@@ -19,8 +22,9 @@
                 @foreach($appointments as $appointment)
                     <tr>
                         <td>{{ $appointment->id }}</td>
-                        <td>{{ $appointment->user->email }}</td>
+                        
                         <td>{{ $appointment->date }}</td>
+                        
                         <td>
                             <a href="{{ route('appointments.edit', $appointment) }}" class="btn btn-warning">Edit</a>
                             <form action="{{ route('appointments.destroy', $appointment) }}" method="POST" style="display:inline;">
