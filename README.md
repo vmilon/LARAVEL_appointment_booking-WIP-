@@ -1,5 +1,8 @@
 Project Overview
-This Laravel project is a web application for managing appointments. Users can create, edit, and delete appointments.
+This Laravel project is a web application for managing appointments. Users can create, edit, and delete appointments. (STILL WORK IN PROGRESS)
+
+
+
 
 Prerequisites
 Before you begin, ensure you have installed the following:
